@@ -1,0 +1,93 @@
+                        <div id="dataBody" class="span11 panel">
+                            <div class="panel-header">
+                                <i class="icon-list-alt icon-blue"></i>
+                                <h2>命令执行返回</h2>                                
+                            </div>
+                            <table class="table table-striped table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th width="14%">设备序列号</th>
+                                        <th width="8%">命令编号</th>  
+                                        <th width="35%">命令内容</th>                                        
+                                        <th width="35%">返回命令</th>   
+                                        <th width="8%">返回结果</th>                                                                             
+                                    </tr>                   
+                                </thead>
+                                <tbody id='body'>
+                                 
+                                </tbody>
+                            </table>
+                            
+                            <div id="pageM" class="pagination pull-right">
+                            </div>
+                            
+                            
+                            <div class="clear"></div>
+                        </div><!--/span-->
+                        
+                        
+						<div class="modal hide" id="operations-modal">
+                            <div class="modal-header">
+                                <button class="close" data-dismiss="modal">×</button>
+                                <h3 class="operations-modal-header">Modal header</h3>
+                            </div>
+                            <div class="modal-body">
+                                <p class="operations-modal">One fine body…</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a  id="cls" href="javascript:void(0);" class="btn" data-dismiss="modal">关闭</a>
+                                <a id="doit" href="javascript:void(0);" class="btn btn-primary" >确定</a>
+                            </div>
+                        </div>
+                
+        <script type="text/javascript">	
+			
+			
+			function fillData( list ){
+				var html = '';	
+				for( var o in list ){
+					var row = list[ o ];	
+					html += '<tr><td>' + ( row['sn'] || '' ) + '</td><td>' + ( row['ID'] || ''  ) + '</td>' +
+						'<td>' + ( row['command'] || '' ) + '</td><td>' + ( row['CMD'] || '' ) + '</td><td>' + 
+						( row['Return'] || '' ) + '</td></tr>';
+				}
+				$('#body').html( html );
+			}
+			
+			function doit(){
+				loadData( '/manage/cmdreturn?page=' + ( currentP || 1 ) , function( msg ){
+					try{
+						var objs=eval(msg);
+					}catch(e){
+						eval("var objs=" + msg);
+					}
+					fillData( objs.data );
+					data.size = objs.size;
+					data.pages = objs.pages;
+					pageInit( objs.pages, objs.size );	
+				} );
+				cmdRtnTimer = setTimeout( doit, 3*1000 );
+			}
+			
+			function init(){				
+				currentP = 1;
+				data = [];
+				if( lineStatus != null ){
+					window.clearTimeout( lineStatus );	
+					lineStatus = null;
+				}
+				if( cmdsTimer != null ){
+					window.clearTimeout( cmdsTimer );	
+				}
+				if( cmdRtnTimer != null ){
+					window.clearTimeout( cmdRtnTimer );	
+					cmdRtnTimer = null;
+				}
+				doit();		
+			}		
+			
+			$(document).ready(function(){
+				init();						
+			});
+			
+        </script>

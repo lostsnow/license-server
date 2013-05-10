@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)http://wbpreview.com/previews/WB003517L/loginform.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<title>许可服务器用户登录</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link rel="stylesheet" type="text/css" href="/webPage/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/webPage/css/bootstrap-responsive.css">
+<link rel="stylesheet" type="text/css" href="/webPage/css/aquaadmin.css">
+</head>
+<body >
+<script type="text/javascript" src="/webPage/js/jquery.min.js"></script>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12 content">
+			<div id="content">
+				<div class="panel login">
+					<div class="panel-header">
+						<i class="icon-user icon-blue"></i>
+						<h2>登录</h2>
+					</div>
+					<div class="panel-content">
+						<form action="/login/" id="login_fm" method="post" >
+							<fieldset>
+							<div class="alert alert-danger">
+								<!--<a class="close" data-dismiss="alert" href="#">×</a>-->
+								<i class="icon-exclamation-sign icon-red"></i>
+								<span id="showMsg" >请输入正确的用户名和密码 !</span>
+							</div>
+							<div class="control-group">
+								<div class="input-prepend">
+									<span class="add-on"><i class="icon-user icon-blue"></i></span>
+									<input id="username" name="username" type="text" placeholder="请输入您的用户名">
+								</div>
+							</div>
+							<div class="control-group">
+								<div class="input-prepend">
+									<span class="add-on"><i class="icon-random icon-blue"></i></span>
+									<input id="password" name="password" type="password" placeholder="输入正确的密码">
+								</div>
+							</div>
+							<hr>
+　　　　　　　　				<button class="btn btn-primary btn-large" id="loginBtn" type="submit" ><i class="icon-ok icon-white"></i> 登录</button>
+							</fieldset>
+						</form>
+					</div>
+				</div><!--/span-->
+			</div><!-- content -->
+		</div>
+	</div><!--/row-->
+	<hr>
+	<footer>
+		<p>© 许可服务器</p>
+	</footer>
+</div><!--/.fluid-container-->
+<script type="text/javascript" src="/webPage/js/bootstrap.min.js"></script>
+</body></html>

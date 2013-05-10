@@ -1,0 +1,320 @@
+                       
+                       
+                       <div style="text-align:center">
+                       	序列号：<input type="text" id="condition" style="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source=''>
+                       	<button id="search" onclick="doSearch()" class="btn btn-primary">查询</button>
+                        <button id="back" onclick="doBack()" class="btn btn-success">返回</button>
+                       </div><br/>
+                        <div id="dataBody" class="span11 panel">
+                            <div class="panel-header">
+                                <i class="icon-list-alt icon-blue"></i>
+                                <h2>设备信息</h2>
+                                <div class="actions-bar">
+                                    <div class="btn-group pull-right">
+                                        <a class="btn btn-success btn-mini">操作</a>
+                                        <a class="btn btn-success btn-mini dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="javascript:addDevice();"><i class="icon-plus"></i> 添加新设备</a></li>
+                                            <li><a href="javascript:delMDevice();"><i class="icon-remove"></i> 删除多个设备</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-striped table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>SN</th>
+                                        <th>IP地址</th>                                        
+                                        <th>在线状态</th>
+                                        <th>最新访问时间</th>
+                                        <th>设备类型</th>
+                                        <th>下发命令状态</th>
+                                        <th>操作</th>                                        
+                                    </tr>
+                                    <!--
+                                    <tr class="filters">
+                                        <td>&nbsp;</td>
+                                        <td><input type="text" maxlength="11" name="id"></td>
+                                        <td><input type="text" maxlength="128" name="name"></td>
+                                        <td class="hidden-phone"><input type="text" maxlength="128" name="email"></td>
+                                        <td class="hidden-phone">
+                                            <select name="status">
+                                                <option value=""></option>
+                                                <option value="10">User</option>
+                                                <option value="12">Administrator</option>
+                                                <option value="12">Editor</option>
+                                            </select>
+                                        </td>
+                                        <td class="hidden-phone"><input type="text" maxlength="128" name="lastVisit"></td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    -->
+                                </thead>
+                                <tbody id='body'>
+                                 
+                                </tbody>
+                                <tr class="table-operations">
+                                        <td class="selections"><input class="selection select-all" type="checkbox" value="1"></td>
+                                        <td colspan="7" class="operations">
+                                            <a class="btn btn-small btn-success" id="checkall" ><i class="icon-ok"></i> 全选</a>
+                                            <a class="btn btn-small btn-warning" id="checkinverse"><i class="icon-remove"></i>反选</a>
+                                        </td>
+                              </tr>
+                            </table>
+                            
+                            <div id="pageM" class="pagination pull-right">
+                                <!--<ul>
+                                    
+                                    <li><a href="javascript:void(0);">5</a></li>
+                                    <li><a href="javascript:void(0);">下一页</a></li>-->
+                                    <!--<li><a href="javascript:void(0);" style="width:1px;" ><span class="caret" style="vertical-align:middle; text-align:center;"></span></a></li>-->
+                                    <!--<li>去<input type="text" id="textfield" style="width:15px;" size="3" maxlength="3" />页&nbsp;<span style="color:#0088CC;">确定</span></li>
+                                </ul>-->
+                            </div>
+                            
+                            
+                            <div class="clear"></div>
+                        </div><!--/span-->
+                        
+                        
+						<div class="modal hide" id="operations-modal">
+                            <div class="modal-header">
+                                <button class="close" data-dismiss="modal">×</button>
+                                <h3 class="operations-modal-header">Modal header</h3>
+                            </div>
+                            <div class="modal-body">
+                                <p class="operations-modal">One fine body…</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a  id="cls" href="javascript:void(0);" class="btn" data-dismiss="modal">关闭</a>
+                                <a id="doit" href="javascript:void(0);" class="btn btn-primary" >确定</a>
+                            </div>
+                        </div>
+                        
+                      
+            
+
+                        
+                        <!--
+                        IE:filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr='grey',endColorStr='#F5F5F5',gradientType='0');
+                           2.filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#E1EBEF,endcolorstr=#CBDDE3, gradientType=0 );
+                        firefox: -moz-linear-gradient(center top , #F5F5F5, grey)
+						Opera: background: -o-linear-gradient(top,#FF0000, #F9F900);
+                        chrome:background: -webkit-gradient(linear, 0 0, 0 bottom, from(#E1EBEF),to(#CBDDE3) );
+                       
+                        IE:<div style="margin-bottom: 9px;width:100px;height:15px;background-color:darkred; filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#f5f5f5,endcolorstr=#999999, gradientType=0 );" class="progress progress-success progress-striped active" data-content="' + msg + '" name="showInfo" data-original-title="详细信息">
+							  <div style="width:58%" class="bar"></div></div>
+                              
+                        Chrome:<div style="margin-bottom: 9px;width:100px;height:15px;background-color:darkred; background: -webkit-gradient(linear, 0 0, 0 bottom, from(#F5F5F5),to(grey) );" class="progress progress-success progress-striped active" data-content="' + msg + '" name="showInfo" data-original-title="详细信息">
+							  <div style="width:58%" class="bar"></div></div>
+                         -->      
+                              
+                              
+<script type="text/javascript">
+	var new_push = { SN : { placeholder : '', helper : '设备的序列号，且不能为空。'}, Sequence : { placeholder :'1' }, Stamp : { placeholder : '0' }, OpStamp : { placeholder :'0' },
+					PhotoStamp : { placeholder :'0' }, ErrorDelay : { placeholder : '60' }, Delay : { placeholder :'30' }, TransTimes : { placeholder :'00:00;14:00' }, TransInterval : { placeholder : '1'},
+					TransFlag : { placeholder : '1111111111' }, Realtime : { placeholder : '1' }, LastActivate : { placeholder : '' }, device_push_version : { placeholder : '2.1' },
+					support_fingerprint : { placeholder : 'true' }, support_access : { placeholder :'false' }, support_advance_access : { placeholder : 'false' }, support_card : { placeholder :'false' },
+					support_face : { placeholder :'false' }, support_sms : { placeholder : 'false' }, support_bell : { placeholder : 'false' }, 'type' : { placeholder : ' ' }};
+	var new_pull = { sn : { placeholder : '', helper : '设备的序列号，且不能为空。'},
+					ipaddress:{ placeholder : 'IP地址' },
+					protocol :{ placeholder : 'TCP或RS485'},
+					port:{ placeholder : '端口号' },
+					timeout:{ placeholder : ' '}		
+				}				
+					
+					
+			function addDevice(){
+				var text = convert( new_push, 1, '18px', null, '30px', {'LastActivate':'' }, 'form','help');
+				var hm = '设备类型：<select name="version" id="devType" onchange="javascript:showOther();"><option name="push" value="push">PUSH 设备</option><option name="pull" value="pull">PULL 设备</option></select><br><span id="new_param">' + text + '</span>';
+					var b = newDialog( {
+						 button : [ { name : '关闭', sign : 'close', id: 'editB' } , { name : '确定', type : 1, fn : function(msg){ init(); } } ], 
+						 title : "新增设备信息",  
+						 content : hm, 
+						 bodyClass : 'alert alert-warning', 
+						 id : 'add', 
+						 action : '/iclock/sdk/device?SN=', 
+						 method : 'post'
+					  } );	
+					 // $("i.popover-help-username").popover();
+					
+			}
+			function showOther(){
+				var new_param = { 'push' : new_push, 'pull' : new_pull };
+				var index = $('#devType').val();
+				var text = convert( new_param[ index ], 1, '18px', null, '30px', {'LastActivate':'' }, 'form','help');
+				$('#new_param').html( text );
+			}
+			function delMDevice(){
+				var lst = [];
+				var sn = ''
+				$('.selection').each( function(){
+					if( $(this).attr( 'checked' ) == 'checked' ){
+						sn  += $(this).val() + ',';
+					}	
+				} );
+				sn = sn.substring( 0, sn.length-1 );
+				if( sn == '' ){ newDialog( { title : '提示',  content : '请勾选要删除的设备！', bodyClass : 'alert alert-warning' } ); return ; }
+				newDialog( {
+						button : [ { name : '关闭', sign : 'close' } , { name : '确定', fname : "doDel(\'" + sn + "\')" }], 
+						title : "删除设备信息",  
+						content : '您确定要删除序列号为"' + sn + '"的设备吗？', 
+						bodyClass : 'alert alert-warning'
+					 } );
+				
+			}
+			
+			function fillData( list ){				
+				var html = '';	　
+				for( var o in list ){
+					var row = list[ o ];					
+					data[ row[ 'SN' ] || row[ 'sn' ] ] = row;
+					var bar = ''
+					if ( row[ 'cmd_index' ] == 0 ){
+						bar = '无命令';
+					}else{
+						var rate = ( row[ 'cmd_end' ] / row[ 'cmd_index' ] * 100 );
+						var msg = "待下发命令：" + (row.cmd_index - row.cmd_end ) + "条<br>已下发命令：" + row.cmd_end + "条<br>命令总条数：" + row.cmd_index + "条";
+						bar = '<div  id="info' + ( row['SN'] || row['sn'] || '' ) + '" name="showInfo" title="详细信息" data-content="' + msg + 
+							  '"  class="progress progress-success progress-striped active" style="margin-bottom: 9px;width:100px;height:15px;' + gradientCss + '">' +
+							  '<div id="bar' + ( row['SN'] || row['sn'] || '' ) + '" class="bar" style="width: ' +  rate + '%"></div></div>';	
+					} 
+					var onlineMsg = row['online']?'<i class="icon-ok icon-green popover-help-username"></i>':'<i class="icon-ban-circle icon-red popover-help-username"></i>';
+					//icon-ok-sign
+					html += '<tr><td class="selections"><input class="selection" type="checkbox" value="' + ( row['SN'] || row['sn'] ||'' ) + '"></td><td>' + ( row['SN'] || row['sn'] || '' ) + '</td>' +
+						'<td>' + ( row['remote_addr'] || row[ 'ipaddress' ] || ''  ) + '</td><td align="center" id="line' + ( row['SN'] || row['sn'] || '' ) + '">　　' + (　　 onlineMsg ) + '</td>' +
+						'<td>' + ( row['LastActivate'] || '' ) + '</td><td>' + ( row['version'] || '' ) + '</td><td id="status' + ( row['SN'] || row['sn'] || '' ) + '">' + bar + '</td>' +
+						'<td class="operations"><a id="view" class="btn btn-small btn-info table-preview" href="javascript:void(0);" ><i class="icon-search"></i></a>&nbsp;&nbsp;' +
+						'<a id="edit" class="btn btn-small btn-warning table-edit" href="javascript:void(0);" ><i class="icon-edit"></i></a>&nbsp;&nbsp;' +
+                        '<a id="remove" href="javascript:void(0);" class="btn btn-small btn-danger"><i class="icon-remove"></i></a></td>' +
+						'</tr>';
+				}
+				$('#body').html( html );
+				$("div[name=showInfo]").popover({placement:'right'});
+			}
+			
+			function doit( condition ){
+				cleanPage();
+				if( typeof( condition ) != 'string') condition = "";
+				loadData( '/manage/device?page=' + ( currentP || 1 ) + condition  , function( msg ){
+					try{
+						var objs=eval(msg);
+					}catch(e){
+						eval("var objs=" + msg);
+					}
+					fillData( objs.devices );
+					data.size = objs.size;
+					data.pages = objs.pages;
+					sns = objs.online;
+					
+					var cdtn = "";
+					if( objs.sns ){
+						for( var sn in objs.sns ){
+							cdtn += '"' + objs.sns[sn] + '",';
+						}	
+					}
+					cdtn = cdtn.substring( 0, cdtn.length-1 );
+					$("#condition").attr("data-source", "[" + cdtn + "]");
+					pageInit( objs.pages, objs.size );										
+					//if( bind == 0 ) bindEvent();
+					bindEvent();
+					if( lineStatus == null ) online();
+				} );
+				//lineStatus = window.setTimeout( doit, 3*1000 );
+				
+				
+			}
+			
+			function doSearch(){
+				var sn = $('#condition').val();
+				currentP = 1;
+				doit( "&sn=" + sn );
+			}
+			
+			function doBack(){
+				doit();
+			}
+			function doDel( sn ){
+				loadData( '/manage/delDev?sn='+sn, function( msg ){
+					try{
+						var objs=eval(msg);
+					}catch(e){
+						eval("var objs="+msg);
+					}
+					//$('#clsBtn').trigger('click');
+					if( objs.error_code == 0){
+						newDialog( { title : '提示',  content : '序列号为"' + sn + '"的设备已删除！', bodyClass : 'alert alert-success' } );
+						doit();	
+					}else{
+						newDialog( { title : '提示',  content : '序列号为"' + sn + '"的设备删除失败&nbsp;' + objs.message || '' + '！', bodyClass : 'alter alert-error'} );
+					}
+						
+				} )
+			}
+			function init(){
+				bind = 0;
+				data = {};
+				sns = {};				
+				if( lineStatus != null ){
+					window.clearTimeout( lineStatus );	
+					lineStatus = null;
+				}
+				if( cmdsTimer != null ){
+					window.clearTimeout( cmdsTimer );	
+				}
+				if( cmdRtnTimer != null ){
+					window.clearTimeout( cmdRtnTimer );	
+					cmdRtnTimer = null;
+				}
+				doit();	
+									
+			}		
+			$(document).ready(function(){
+				init();				
+				
+			});
+			function bindEvent(){
+				$(".operations").delegate('a.table-preview','click', function(){					
+					var sn = $(this).parents('tr').find('input[type="checkbox"]').attr('value');   
+					var text = convert( data[ sn ], 1, '18px', null, '30px');  
+					newDialog( { title : "查看设备详细信息",  content : text, bodyClass : 'alert alert-success', id : 'view' } );
+            	});
+				
+				$(".operations").delegate('a.table-edit','click', function(){
+                	var sn = $(this).parents('tr').find('input[type="checkbox"]').attr('value');   
+					var text = convert( data[ sn ], 1, '18px', null, '30px', {'options':'' }, 'form');
+					var b = newDialog( {
+						 button : [ { name : '关闭', sign : 'close', id: 'editB' } , { name : '确定', type : 1, fn : function(msg){ init(); } } ], 
+						 title : "修改设备信息",  
+						 content : text, 
+						 bodyClass : 'alert alert-warning', 
+						 id : 'edit', 
+						 action : '/iclock/sdk/device?SN=', 
+						 method : 'post'
+					  } );
+          		});
+				
+            	$(".operations").delegate('a.btn-danger','click', function(){
+				  	var sn = $(this).parents('tr').find('input[type="checkbox"]').attr('value');   
+					newDialog( {
+						button : [ { name : '关闭', sign : 'close' } , { name : '确定', fname : "doDel(\'" + sn + "\')" }], 
+						title : "删除设备信息",  
+						content : '您确定要删除序列号为"' + sn + '"的设备吗？', 
+						bodyClass : 'alert alert-error'
+					 } );
+            	});
+			}
+           
+            $("input.select-all").click(function(){
+                if($("input.select-all").attr('checked') == 'checked'){
+                    $("input.selection").attr('checked', true);
+                }
+                else{
+                    $("input.selection").attr('checked',false);
+                }
+            });
+        </script>

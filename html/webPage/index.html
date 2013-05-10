@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050) -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <title>ADMS</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/webPage/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/webPage/css/bootstrap-responsive.css">
+        <link rel="stylesheet" type="text/css" href="/webPage/css/aquaadmin.css">
+     <!--   
+        <link rel="stylesheet" href="/webPage/js/jquery-ui-datepicker/jquery-ui-1.10.2.custom/development-bundle/themes/base/jquery.ui.all.css">
+        <link rel="stylesheet" href="/webPage/js/jquery-ui-datepicker/jquery-ui-1.10.2.custom/development-bundle/demos/demos.css">
+        -->
+        <style>
+        .leftA:{ background-color:#fff; }
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript" src="/webPage/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/webPage/js/main.js"></script> 
+    <!--    
+        <script src="/webPage/js/jquery-ui-datepicker/jquery-ui-1.10.2.custom/development-bundle/ui/jquery.ui.core.js"></script>
+		<script src="/webPage/js/jquery-ui-datepicker/jquery-ui-1.10.2.custom/development-bundle/ui/jquery.ui.widget.js"></script>
+		<script src="/webPage/js/jquery-ui-datepicker/jquery-ui-1.10.2.custom/development-bundle/ui/jquery.ui.datepicker.js"></script>
+      
+      <!--  
+        <script type="text/javascript" src="/webPage/js/ui/jquery.ui.datepicker-zh-cn.js"></script>
+        <script type="text/javascript" src="/webPage/js/ui/jquery-ui-timepicker-addon.js"></script>
+        <script type="text/javascript" src="/webPage/js/ui/jquery-ui-timepicker-zh-cn.js"></script> 
+        <script type="text/javascript" src="/webPage/js/ui/jquery-ui-1.8.18.custom.min.js"></script>  
+        <script type="text/javascript" src="/webPage/js/ui/core.js"></script> 
+        <script type="text/javascript" src="/webPage/js/ui/i18n.js"></script> 
+        <script type="text/javascript" src="/webPage/js/ui/i18n_zh-cn.js"></script> 
+        <script type="text/javascript" src="/webPage/js/ui/dept-emp.tree9.js"></script> 
+        <script type="text/javascript" src="/webPage/js/ui/colorpicker.js"></script>
+        <script type="text/javascript" src="/webPage/js/ui/fullcalendar.min.js"></script>
+        <script type="text/javascript" src="/webPage/js/ui/grid.locale-zh-cn.js"></script>
+        <script type="text/javascript" src="/webPage/js/ui/highcharts.js"></script>
+        <script type="text/javascript" src="/webPage/js/ui/jquery.validate.min.js"></script>
+        -->
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="#">许可服务器管理系统</a>
+                    <div class="btn-group pull-right">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="icon-user"></i> <span id="username"> 用户名</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:changePwd();"><i class="icon-user"></i> 修改密码</a></li>
+                          	
+                            <li class="divider"></li>
+                            <li><a href="javascript:exit_sys();"><i class="icon-off"></i> 退出</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="btn-group pull-right">
+                        <a class="badge badge-warning" data-toggle="dropdown">系统服务</a>
+                        <ul class="dropdown-menu popup">
+                            <li>
+                                <a href="javascript:service(0);"><i class="icon-comment icon-blue"></i> 停止系统服务
+                                    <span class="popup-content">
+                                       停止ADMS服务后您需要手动启动才可使用
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:service(1);"><i class="icon-comment icon-blue"></i> 重启系统服务
+                                    <span class="popup-content">
+                                       重新启动ADMS服务
+                                    </span>
+                                </a>
+                            </li>
+                            <!--
+                            <li class="divider"></li>
+                            <li>
+                                <a href="javascript:service(2);"><i class="icon-user icon-blue"></i>清理系统无效数据
+                                    <span class="popup-content">
+                                        清理ADMS中的错误日志，访问日志                                      
+                                    </span>
+                                </a>
+                            </li>                            
+                            -->
+                        </ul>
+                    </div>
+                    
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            <li class="active"><a href="javascript:index();"><i class="icon-home icon-aqua"></i> 首页</a></li>
+                            
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="icon-random icon-aqua"></i> 快捷链接
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:getParam();"><i class="icon-edit"></i> 修改系统参数</a></li>                                    
+                                    <li><a href="javascript:getStatus();"><i class="icon-comment"></i> 查看系统状态</a></li>
+                                </ul>
+                            </li>
+                            
+                            <li><a href="../home.html"><i class="icon-envelope icon-aqua"></i>API Document</a></li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span12 top-bar">
+                    <ul class="breadcrumb">
+                        <li><a href="javascript:index();">首页</a></li><li class="breadcrumb-separator"><i class="icon-chevron-right icon-blue"></i></li> <li><span id="curP"></span></li></ul><!-- breadcrumbs -->
+                   <div class="actions-bar">
+                        <div class="btn-group pull-right">
+                            
+                            <a id="stausBar" class="btn btn-inverse" style="height:20px; width:550px;">
+                            	<table border="0">
+                            	<tr>                                	
+                                    <td>数据读取状态：</td>
+                                    <td id="read_status"> 无 </td>
+                                    <td>　　设备总数：</td>
+                                	<td id="dev_sum"> 0 </td>
+                                    <td>　　待审核的设备总数：</td>
+                                	<td id="check_sum"> 0 </td>
+                                    <td id="warning"> sdsd </td>
+                                </tr>
+                            </table>
+                            </a>
+                           
+                        </div>
+                    </div>
+                   <!--
+                    <div class="actions-bar">
+                        <div class="btn-group pull-right">
+                            
+                            <a class="btn btn-inverse">服务管理</a>
+                            <a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="javascript:service(0)"><i class="icon-lock"></i>停止服务</a></li>
+                                <li><a href="javascript:service(1)"><i class="icon-barcode"></i>重启服务</a></li>
+                                <li><a href="javascript:service(2)"><i class="icon-trash"></i>清理无效数据</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    -->
+                    
+                </div>
+                <div class="span2 sp2 all-left">
+                    <div class="sidebar-nav">
+                        <ul class="nav nav-list" id="leftM">
+                        	<li><a name="kidd" href="#"><i class="icon-tasks icon-aqua"></i> 许可记录查询 </a></li>
+                            <!--<li><a name="devices" href="#"><i class="icon-tasks icon-aqua"></i> 设备管理 </a></li>-->                            
+                            <!--<li><a name="controler" href="#"><i class="icon-tasks icon-aqua"></i> 服务器控制 </a></li>-->                            
+                            <li> 
+                   <!--           <div class="accordion-heading">
+                <a href="#collapseOne" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle" style='background:url(img/arrow.png) no-repeat scroll right center #EEEEEE'>
+                 <i class="icon-list-alt icon-aqua"></i> 数据缓存查询</a>
+                </a>
+              </div>
+              <div class="accordion-body collapse" id="collapseOne" style="height: 0px;">
+                <div class="accordion-inner" style=" background-color:#fff;">
+		  			<a name='uploadData' href='#' style="background-color:#fff;" >上传数据查询</a><br/>
+                    <a name='cmds' href='#' style="background-color:#fff;">下发命令查询</a><br/>
+                    <a name='cmdreturn' href='#' style="background-color:#fff;">命令执行返回</a><br/>
+                </div>
+              </div>
+              -->
+              
+                            </li>
+                            <li><a name="uploadfile" href="#"><i class="icon-tasks icon-aqua"></i> 上传文件查询 </a></li> 
+                            <li><a name="dev_check" href="#"><i class="icon-tasks icon-aqua"></i> IP管理 </a></li> 
+                            <li><a name="user" href="#"><i class="icon-tasks icon-aqua"></i> 用户管理 </a></li>
+                            <li><a name="dev_check" href="#"><i class="icon-tasks icon-aqua"></i> 手动生成许可 </a></li>                           
+                            <!--
+                            <li><a name="console" href="#"><i class="icon-tasks icon-aqua"></i> 数据查询器 </a></li>                                                        
+                            <li><a name="home" href="#"><i class="icon-home icon-aqua"></i> 首页</a></li>
+	                        <li><a name="form" href="#"><i class="icon-tasks icon-aqua"></i> 表单</a></li>
+                            <li> <a name="table" href="#"><i class="icon-list-alt icon-aqua"></i> 数据报表</a></li>
+                            
+                            
+                            <li><a name="error" href="#"><i class="icon-exclamation-sign icon-aqua"></i> 错误</a></li>
+                            
+                            <li class="nav-header">其他</li>
+                            <li><a href="login.html"><i class="icon-user icon-aqua"></i> 登录表单</a></li>-->
+                        </ul>
+                    </div>
+                </div><!--/span-->
+                <div class="span10 content">
+                    <div id="content">  
+                    <!--填充页面内容-->
+                    </div><!-- content -->
+                </div>
+            </div><!--/row-->
+            <hr>
+            <footer style="text-align:center">
+                <p>许可服务器管理页面，2013</p>
+            </footer>
+        </div><!--/.fluid-container-->
+       <script type="text/javascript" src="/webPage/js/bootstrap.min.js"></script>
+       <!--<script type="text/javascript" src="js/json2.js"></script>-->
+    
+
+</body></html>

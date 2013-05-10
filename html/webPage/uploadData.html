@@ -1,0 +1,121 @@
+                                         
+                        <div id="dataBody" class="span11 panel">
+                            <div class="panel-header">
+                                <i class="icon-list-alt icon-blue"></i>
+                                <h2>上传数据查询</h2>                                
+                            </div>
+                            <table class="table table-striped table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">批次</th>
+                                        <th width="10%">设备序列号</th>  
+                                        <th width="10%">数据对象名</th>                                        
+                                        <th width="60%">数据内容</th>   
+                                        <th width="10%">操作</th>                                                                             
+                                    </tr>                   
+                                </thead>
+                                <tbody id='body'>
+                                 
+                                </tbody>
+                            </table>
+                            
+                            <div id="pageM" class="pagination pull-right">
+                            </div>
+                            
+                            
+                            <div class="clear"></div>
+                        </div><!--/span-->
+                        
+                        
+						<div class="modal hide" id="operations-modal">
+                            <div class="modal-header">
+                                <button class="close" data-dismiss="modal">×</button>
+                                <h3 class="operations-modal-header">Modal header</h3>
+                            </div>
+                            <div class="modal-body">
+                                <p class="operations-modal">One fine body…</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a  id="cls" href="javascript:void(0);" class="btn" data-dismiss="modal">关闭</a>
+                                <a id="doit" href="javascript:void(0);" class="btn btn-primary" >确定</a>
+                            </div>
+                        </div>
+                
+        <script type="text/javascript">	
+			
+			
+			function fillData( list ){
+				var html = '';	
+				for( var o in list ){
+					var row = list[ o ];	
+					data[ o ] = row;
+					var tmp = '';
+					for( var p in row  ){
+						var val = row[ p ];
+						if( val.length > 50 ){
+							val = val.substring( 1, 10 ) + '……';	
+						}
+						tmp += p + '=' + val + ','; 
+					}
+					
+					var t = tmp.substring( 0, tmp.length - 1 );
+					var content = "";
+					while( t.length > 98 ){
+						content += t.substring( 0, 98 ) + '\n';
+						t = t.substring( 98, t.length );
+					}
+					content += t; 
+					html += '<tr id="row' + o + '" ><td>' + ( row['id'] || '' ) + '</td><td>' + ( row['sn'] || ''  ) + '</td>' +
+						'<td>' + ( row['entity'] || '' ) + '</td><td>' + ( content || '' ) + '</td>'+
+						'<td class="operations"><a id="view" class="btn btn-small btn-info table-preview" href="javascript:void(0);" ><i class="icon-search"></i></a>&nbsp;&nbsp;</tr>';
+				}
+				$('#body').html( html );
+			}
+			
+			function doSearch(){
+				var sn = $('#condition').val();
+				doit( "&sn=" + sn );
+			}
+			
+			function doBack(){
+				doit();
+			}
+			
+			function doit(){
+				loadData( '/manage/uploaddata?skip=5&page=' + ( currentP || 1 ) , function( msg ){
+					try{
+						var objs=eval(msg);
+					}catch(e){
+						eval("var objs=" + msg);
+					}
+					fillData( objs.data );
+					data.size = objs.size;
+					data.pages = objs.pages;
+					pageInit( objs.pages, objs.size, true );	
+					bindEvent();
+				} )
+			}
+			
+			function init(){				
+				currentP = 1;
+				data = {};
+				doit();	
+				if( lineStatus != null ){
+					window.clearTimeout( lineStatus );	
+					lineStatus = null;
+				}
+			}		
+			$(document).ready(function(){
+				init();						
+			});
+			function bindEvent(){
+				$(".operations").delegate('a.table-preview','click', function(){							
+					var index = $(this).parents('tr').attr('id'); 
+					index = index.substring(3, index.length); 
+					var text = convert( data[ index ], 1, '18px', null, '30px');  
+					
+					newDialog( { title : "查看上传数据信息",  content : text, bodyClass : 'alert alert-success', id : 'view' } );
+        		});	
+	}
+			
+        </script>

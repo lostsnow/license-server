@@ -1,0 +1,237 @@
+                        <div id="dataBody" class="span11 panel">
+                            <div class="panel-header">
+                                <i class="icon-list-alt icon-blue"></i>
+                                <h2>设备信息</h2>
+                                <div class="actions-bar">
+                                    <div class="btn-group pull-right">
+                                        <a class="btn btn-success btn-mini">操作</a>
+                                        <a class="btn btn-success btn-mini dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="javascript:addDevice();"><i class="icon-plus"></i> 添加新设备</a></li>
+                                            <li><a href="javascript:delMDevice();"><i class="icon-remove"></i> 删除多个设备</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-striped table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>SN</th>
+                                        <th>IP地址</a></th>
+                                        <th>设备机型</th>
+                                        <th>在线状态</th>
+                                        <th>最新访问时间</th>
+                                        <th>push版本</th>
+                                        <th>操作</th>                                        
+                                    </tr>
+                                    
+                                    <tr class="filters">
+                                        <td>&nbsp;</td>
+                                        <td><input type="text" maxlength="11" name="id"></td>
+                                        <td><input type="text" maxlength="128" name="name"></td>
+                                        <td class="hidden-phone"><input type="text" maxlength="128" name="email"></td>
+                                        <td class="hidden-phone">
+                                            <select name="status">
+                                                <option value=""></option>
+                                                <option value="10">User</option>
+                                                <option value="12">Administrator</option>
+                                                <option value="12">Editor</option>
+                                            </select>
+                                        </td>
+                                        <td class="hidden-phone"><input type="text" maxlength="128" name="lastVisit"></td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                </thead>
+                                <tbody id='body'>
+                                 
+                                </tbody>
+                                <tr class="table-operations">
+                                        <td class="selections"><input class="selection select-all" type="checkbox" value="1"></td>
+                                        <td colspan="7" class="operations">
+                                            <a class="btn btn-small btn-success" id="checkall" ><i class="icon-ok"></i> 全选</a>
+                                            <a class="btn btn-small btn-warning" id="checkinverse"><i class="icon-remove"></i>反选</a>
+                                        </td>
+                              </tr>
+                            </table>
+                            
+                            <div id="pageM" class="pagination pull-right">
+                                <!--<ul>
+                                    
+                                    <li><a href="javascript:void(0);">5</a></li>
+                                    <li><a href="javascript:void(0);">下一页</a></li>-->
+                                    <!--<li><a href="javascript:void(0);" style="width:1px;" ><span class="caret" style="vertical-align:middle; text-align:center;"></span></a></li>-->
+                                    <!--<li>去<input type="text" id="textfield" style="width:15px;" size="3" maxlength="3" />页&nbsp;<span style="color:#0088CC;">确定</span></li>
+                                </ul>-->
+                            </div>
+                            
+                            
+                            <div class="clear"></div>
+                        </div><!--/span-->
+                        
+                        
+						<div class="modal hide" id="operations-modal">
+                            <div class="modal-header">
+                                <button class="close" data-dismiss="modal">×</button>
+                                <h3 class="operations-modal-header">Modal header</h3>
+                            </div>
+                            <div class="modal-body">
+                                <p class="operations-modal">One fine body…</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a  id="cls" href="javascript:void(0);" class="btn" data-dismiss="modal">关闭</a>
+                                <a id="doit" href="javascript:void(0);" class="btn btn-primary" >确定</a>
+                            </div>
+                        </div>
+                
+        <script type="text/javascript">
+			function addDevice(){
+				var new_device = { SN : { placeholder : '', helper : '设备的序列号，且不能为空。'}, Sequence : { placeholder :'1' }, Stamp : { placeholder : '0' }, OpStamp : { placeholder :'0' },
+					PhotoStamp : { placeholder :'0' }, ErrorDelay : { placeholder : '60' }, Delay : { placeholder :'30' }, TransTimes : { placeholder :'00:00;14:00' }, TransInterval : { placeholder : '1'},
+					TransFlag : { placeholder : '1111111111' }, Realtime : { placeholder : '1' }, LastActivate : { placeholder : '' }, device_push_version : { placeholder : '2.1' },
+					support_fingerprint : { placeholder : 'true' }, support_access : { placeholder :'false' }, support_advance_access : { placeholder : 'false' }, support_card : { placeholder :'false' },
+					support_face : { placeholder :'false' }, support_sms : { placeholder : 'false' }, support_bell : { placeholder : 'false' }, 'type' : { placeholder : '' }};
+				/*
+				var new_device = { SN : '', Sequence : '1', Stamp : '0', OpStamp : '0', PhotoStamp : '0', ErrorDelay : '60', Delay : '30', TransTimes : '00:00;14:00', TransInterval : '1',
+					TransFlag : '1111111111', Realtime : '1', LastActivate : '', device_push_version : '2.1', support_fingerprint : 'true', support_access : 'false', 
+					support_advance_access : 'false',support_card : 'false', support_face : 'false', support_sms : 'false', support_bell : 'false', type : ''};
+				
+				*/
+				
+				var text = convert( new_device, 1, '18px', null, '30px', null, 'form','help');
+					var b = newDialog( {
+						 button : [ { name : '关闭', sign : 'close', id: 'editB' } , { name : '确定', type : 1, fn : function(msg){ init(); } } ], 
+						 title : "新增设备信息",  
+						 content : text, 
+						 bodyClass : 'alert alert-warning', 
+						 id : 'add', 
+						 action : '/iclock/pushsdk/device?SN=', 
+						 method : 'post'
+					  } );	
+					  $("i.popover-help-username").popover();
+					
+			}
+			
+			function delMDevice(){
+				var lst = [];
+				var sn = ''
+				$('.selection').each( function(){
+					if( $(this).attr( 'checked' ) == 'checked' ){
+						sn  += $(this).val() + ',';
+					}	
+				} );
+				sn = sn.substring( 0, sn.length-1 );
+				if( sn == '' ){ newDialog( { title : '提示',  content : '请勾选要删除的设备！', bodyClass : 'alert alert-warning' } ); return ; }
+				newDialog( {
+						button : [ { name : '关闭', sign : 'close' } , { name : '确定', fname : "doDel(\'" + sn + "\')" }], 
+						title : "删除设备信息",  
+						content : '您确定要删除序列号为"' + sn + '"的设备吗？', 
+						bodyClass : 'alert alert-warning'
+					 } );
+				
+			}
+			
+			function fillData( list ){
+				var html = '';	
+				for( var o in list ){
+					var row = list[ o ];					
+					data[ row[ 'SN' ] ] = row;
+					html += '<tr><td class="selections"><input class="selection" type="checkbox" value="' + ( row['SN'] || '' ) + '"></td><td>' + ( row['SN'] || '' ) + '</td>' +
+						'<td>' + ( row['remote_addr'] || ''  ) + '</td><td>' + ( row['style'] || '' ) + '</td><td id="line' + ( row['SN'] || '' ) + '">' + ( row['online']?'在线':'不在线' ) + '</td>' +
+						'<td>' + ( row['LastActivate'] || '' ) + '</td><td>' + ( row['device_push_version'] || '' ) + '</td>' +
+						'<td class="operations"><a id="view" class="btn btn-small btn-info table-preview" href="javascript:void(0);" ><i class="icon-search"></i></a>&nbsp;&nbsp;' +
+						'<a id="edit" class="btn btn-small btn-warning table-edit" href="javascript:void(0);" ><i class="icon-edit"></i></a>&nbsp;&nbsp;' +
+                        '<a id="remove" href="javascript:void(0);" class="btn btn-small btn-danger"><i class="icon-remove"></i></a></td>' +
+						'</tr>';
+				}
+				$('#body').html( html );
+			}
+			
+			function doit(){
+				loadData( '/manage/device?page=' + ( currentP || 1 ) , function( msg ){
+					try{
+						var objs=eval(msg);
+					}catch(e){
+						eval("var objs=" + msg);
+					}
+					fillData( objs.devices );
+					data.size = objs.size;
+					data.pages = objs.pages;
+					sns = objs.online;
+					pageInit( objs.pages, objs.size );										
+					//if( bind == 0 ) bindEvent();
+					bindEvent();
+				} )
+			}
+			function doDel( sn ){
+				loadData( '/manage/delDev?sn='+sn, function( msg ){
+					try{
+						var objs=eval(msg);
+					}catch(e){
+						eval("var objs="+msg);
+					}
+					//$('#clsBtn').trigger('click');
+					if( objs.error_code == 0){
+						newDialog( { title : '提示',  content : '序列号为"' + sn + '"的设备已删除！', bodyClass : 'alert alert-success' } );
+						doit();	
+					}else{
+						newDialog( { title : '提示',  content : '序列号为"' + sn + '"的设备删除失败&nbsp;' + objs.message || '' + '！', bodyClass : 'alter alert-error'} );
+					}
+						
+				} )
+			}
+			function init(){
+				bind = 0;
+				data = {};
+				sns = [];
+				doit();	
+				if( lineStatus == null ) online();					
+			}		
+			$(document).ready(function(){
+				init();				
+				
+			});
+			function bindEvent(){
+				$(".operations").delegate('a.table-preview','click', function(){					
+					var sn = $(this).parents('tr').find('input[type="checkbox"]').attr('value');   
+					var text = convert( data[ sn ], 1, '18px', null, '30px');  
+					newDialog( { title : "查看设备详细信息",  content : text, bodyClass : 'alert alert-success', id : 'view' } );
+            	});
+				
+				$(".operations").delegate('a.table-edit','click', function(){
+                	var sn = $(this).parents('tr').find('input[type="checkbox"]').attr('value');   
+					var text = convert( data[ sn ], 1, '18px', null, '30px', {'options':'' }, 'form');
+					var b = newDialog( {
+						 button : [ { name : '关闭', sign : 'close', id: 'editB' } , { name : '确定', type : 1, fn : function(msg){ init(); } } ], 
+						 title : "修改设备信息",  
+						 content : text, 
+						 bodyClass : 'alert alert-warning', 
+						 id : 'edit', 
+						 action : '/iclock/pushsdk/device?SN=', 
+						 method : 'post'
+					  } );
+          		});
+				
+            	$(".operations").delegate('a.btn-danger','click', function(){
+				  	var sn = $(this).parents('tr').find('input[type="checkbox"]').attr('value');   
+					newDialog( {
+						button : [ { name : '关闭', sign : 'close' } , { name : '确定', fname : "doDel(\'" + sn + "\')" }], 
+						title : "删除设备信息",  
+						content : '您确定要删除序列号为"' + sn + '"的设备吗？', 
+						bodyClass : 'alert alert-error'
+					 } );
+            	});
+			}
+           
+            $("input.select-all").click(function(){
+                if($("input.select-all").attr('checked') == 'checked'){
+                    $("input.selection").attr('checked', true);
+                }
+                else{
+                    $("input.selection").attr('checked',false);
+                }
+            });
+        </script>

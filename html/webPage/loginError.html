@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<title>ADMS管理界面</title>
+</head>
+<body >
+<h2>登录错误</h2>
+
+<div>
+<form action="/login/" onSubmit="return isLogin();" method="post" >
+<fieldset style=" width:300px;">
+&nbsp;<br/>
+用户名：<input id="username" name="username" type="text" placeholder="请输入您的用户名"><br/>&nbsp;<br/>
+密　码：<input id="password" name="password" type="password" placeholder="输入正确的密码"><br/>
+<p>
+<span id="showMsg" style="color:red;" >请输入正确的用户名和密码 !</span>
+</p>
+<hr>
+　　　　　　　　　　
+<button type="reset">重置</button>
+<button type="submit">登录</button>
+</fieldset>
+</form>
+</div>
+
+<script type="text/javascript">
+function isLogin(){
+	var user = window.document.getElementById( 'username' ).value;
+	var pwd = window.document.getElementById( 'password' ).value;
+	if( user=="" || pwd==""){
+		var show = window.document.getElementById( 'showMsg' );
+		show.innerHTML = '用户名和密码不能为空！';
+		return false;
+	}else{
+		return true;
+	}
+}
+</script>
+</body></html>

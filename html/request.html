@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>发送至许可服务器</title>
+<script type="application/javascript" language="javascript" src="jquery-1.5.2.min.js"></script>
+<!--<script type="application/javascript" language="javascript" src="json2.js"></script>-->
+<script>
+	$(document).ready(function(){		
+		var device= 'this is a zip body content';
+		$('#new_device').html(device);
+		var getDeviceParamStr = '{"devices":["123456789"],"param":["antiPassback","interLock","backupTime"]}';
+		$('#getDeviceParam').html(getDeviceParamStr);
+/*		var setDeviceParamStr = '{"antiPassback":"2","interLock":"3","backupTime":12}'
+		$('#setDeviceParam').html(setDeviceParamStr);
+		var controlDeviceStr ="{'devices':['123456789'],'control':{'operationId':1,'doorId':1,'outputAddr':2,'doorStatus':6}}";
+		$('#controlDevice').html(controlDeviceStr);
+		var setDeviceDataStr = '{"devices":["123456789"],"options":[{"entity":"user","pin":"12900","cardno":"23212","group":"1"},{"entity":"user","pin":"12901","cardno":"83212","group":"2"}]}';
+		$('#setDeviceData').html(setDeviceDataStr);		
+		var getDeviceDataStr = '{"devices":["123456789"],"options":[{"entity":"user","field":["pin","cardno"]}]}';
+		$('#getDeviceData').html(getDeviceDataStr);
+		var getDeviceDataCountStr = '{"devices":["123456789"],"options":[{"entity":"user"}]}';
+		$('#getDeviceDataCount').html(getDeviceDataCountStr);
+		var deleteDeviceDataStr = '{"devices":["123456789"],"options":[{"entity":"user","filter":{"pin":"12900"}}]}';
+		$('#deleteDeviceData').html(deleteDeviceDataStr);
+		var modifyIPAddressStr = "[{'mac':'00:17:61:01:88:27','ip':'192.168.1.223','comm_type':'UDP','address':'255.255.255.255'}]";
+		$('#modifyIPAddress').html(modifyIPAddressStr);	
+		//{'devices':['*'],'direction':'get/set','files':[{'filename':'','content':'','size':*,'option':''},...]}
+		var deviceFileDataStr = "{'devices':['123456789'],'direction':'set','files':[{'filename':'main.tgz','content':'22222222222222'}]}";
+		$('#deviceFileData').html(deviceFileDataStr);
+*/		
+	});
+	function post_device(){
+//	$.ajax({type:'POST',url:'http://127.0.0.1:8089/iclock/sdk/permit?SNs=12898192898|2d:22:2d:00:90:8c,12898192900|2d:22:2d:00:90:90-12898192910|2d:22:2d:00:90:9A&info=M880&id=1017&last_id=998&user=刘&lang=E',data:$('#new_device').val(),success:function(msg){alert(msg);}});
+		$.ajax({type:'POST',url:'http://127.0.0.1:8089/iclock/sdk/permit?SNs=12898192898|2d:22:2d:00:90:8c&info=M880&id=1044&last_id=998&user=刘清武&lang=E',data:$('#new_device').val(),success:function(msg){alert(msg);}});
+	}	
+	function get_deviceParam (){
+		$.ajax({type:'POST',url:'/iclock/sdk/deviceParam?direct=get',data:$('#getDeviceParam').val(),success:function(msg){alert(msg);}});		
+	}
+/*	function set_deviceParam(){//
+		$.ajax({type:'POST',url:'/iclock/sdk/deviceParam?direct=set&SN='+$('#setDeviceParamSN').val(),data:$('#setDeviceParam').val(),success:function(msg){alert(msg);}});		
+	}
+	function control_device(){
+		$.ajax({type:'POST',url:'/iclock/sdk/controlDevice',data:$('#controlDevice').val(),success:function(msg){alert(msg);}});		
+	}
+	function get_deviceData(){
+		$.ajax({type:'POST',url:'/iclock/sdk/getDeviceData',data:$('#getDeviceData').val(),success:function(msg){alert(msg);}});		
+	}
+	function set_deviceData(){
+		$.ajax({type:'POST',url:'/iclock/sdk/setDeviceData',data:$('#setDeviceData').val(),success:function(msg){alert(msg);}});	
+	}
+	function get_deviceDataCount(){
+		$.ajax({type:'POST',url:'/iclock/sdk/getDeviceDataCount',data:$('#getDeviceDataCount').val(),success:function(msg){alert(msg);}});	
+	}
+	function delete_deviceData(){
+		$.ajax({type:'POST',url:'/iclock/sdk/deleteDeviceData',data:$('#deleteDeviceData').val(),success:function(msg){alert(msg);}});	
+	}
+	function modify_ipAddress(){
+		$.ajax({type:'POST',url:'/iclock/sdk/modifyIPAddress',data:$('#modifyIPAddress').val(),success:function(msg){alert(msg);}});	
+	}	
+	function device_fileData(){
+		$.ajax({type:'POST',url:'/iclock/sdk/deviceFileData',data:$('#deviceFileData').val(),success:function(msg){alert(msg);}});	
+	}
+	*/
+</script>
+</head>
+
+<body>
+
+<br />发送请求：<br />
+<form id="form4" name="form4" method="post" action="">
+  device:
+<label for="textarea4"></label>
+<textarea name="textarea4" id="new_device" cols="45" rows="5"></textarea>
+<br />
+<input type="button" name="button2" onclick="post_device()" id="button2" value="post_device" />
+</form>
+
+<br />读取控制器参数：<br />
+<form id="form41" name="form41" method="post" action="">
+  param:
+<label for="textarea41"></label>
+<textarea name="textarea41" id="getDeviceParam" cols="45" rows="5"></textarea>
+<br />
+<input type="button" name="button41" onclick="get_deviceParam()" id="button41" value="getDeviceParam" />
+</form>
+<!--
+<br />设置控制器参数：<br />
+<form id="form42" name="form42" method="post" action="">
+  SN :
+  <label for="textfield"></label>
+  <input type="text" name="setDeviceParamSN" id="setDeviceParamSN" value="123456789" />
+  <br />
+  param:
+<label for="textarea42"></label>
+<textarea name="textarea42" id="setDeviceParam" cols="45" rows="5"></textarea>
+<br />
+<input type="button" name="button42" onclick="set_deviceParam()" id="button42" value="setDeviceParam" />
+</form>
+
+<br />控制控制器动作：<br />
+<form id="form43" name="form43" method="post" action="">
+  param:
+<label for="textarea43"></label>
+<textarea name="textarea43" id="controlDevice" cols="45" rows="5"></textarea>
+<br />
+<input type="button" name="button43" onclick="control_device()" id="button43" value="controlDevice" />
+</form>
+
+<br />从设备读取数据：<br />
+<form id="form44" name="form44" method="post" action="">
+  param:
+<label for="textarea44"></label>
+<textarea name="textarea44" id="getDeviceData" cols="45" rows="5"></textarea>
+<br />
+<input type="button" name="button44" onclick="get_deviceData()" id="button2" value="getDeviceData" />
+</form>
+
+<br />设置数据到设备：<br />
+<form id="form45" name="form45" method="post" action="">
+  param:
+<label for="textarea45"></label>
+<textarea name="textarea45" id="setDeviceData" cols="45" rows="5"></textarea>
+<br />
+<input type="button" name="button25" onclick="set_deviceData()" id="button25" value="setDeviceData" />
+</form>
+
+<br />读取设备中的记录总数信息，返回指定数据的记录条数：<br />
+<form id="form46" name="form46" method="post" action="">
+  param:
+<label for="textarea46"></label>
+<textarea name="textarea46" id="getDeviceDataCount" cols="45" rows="5"></textarea>
+<br />
+<input type="button" name="button26" onclick="get_deviceDataCount()" id="button26" value="getDeviceDataCount" />
+</form>
+
+<br />删除设备中的数据：<br />
+<form id="form47" name="form47" method="post" action="">
+  param:
+<label for="textarea47"></label>
+<textarea name="textarea47" id="deleteDeviceData" cols="45" rows="5"></textarea>
+<br />
+<input type="button" name="button27" onclick="delete_deviceData()" id="button27" value="deleteDeviceData" />
+</form>
+
+<br />UDP广播方式修改控制器IP地址：<br />
+<form id="form49" name="form49" method="post" action="">
+  param:
+<label for="textarea49"></label>
+<textarea name="textarea49" id="modifyIPAddress" cols="45" rows="5"></textarea>
+<br />
+<input type="button" name="button29" onclick="modify_ipAddress()" id="button29" value="modifyIPAddress" />
+</form>
+
+<br />从设备得到或设备数据：<br />
+<form id="form411" name="form411" method="post" action="">
+  param:
+<label for="textarea411"></label>
+<textarea name="textarea411" id="deviceFileData" cols="45" rows="5"></textarea>
+<br />
+<input type="button" name="button211" onclick="device_fileData()" id="button211" value="getDeviceFileData" />
+</form>
+-->
+</body>
+</html>

@@ -1,0 +1,58 @@
+<style>
+.scrollspy-example {
+  height: 430px;
+  overflow: auto;
+  position: relative;
+  background-color:#15354C; 
+  color:#fff;
+}
+</style>    
+   
+                        <div id="dataBody" class="span11 panel">
+                            <div class="panel-header">
+                                <i class="icon-list-alt icon-blue"></i>
+                                <h2>数据查询器</h2>                                
+                            </div>                          
+                            <table border="0" width="100%">
+                            	<tr>
+                            	  <td height="50px">
+                                  <table border="0" align="center">
+                                  <tr>
+                                  <td width="112" align="center" valign="middle">站内查询地址：</td>
+                                  <td width="168" align="center" valign="middle"><input type="text"  style="width:500px;" placeholder="/iclock/pushsdk/*" id="url"></td>
+                                  <td width="142" align="center" valign="middle"><button type="button" onclick="javascript:doSearch();" class="btn btn-small btn-info table-preview">查询</button></td>
+                                  </tr>
+                                  </table>                                  
+                              </td></tr></table>
+                        
+                        <div data-spy="scroll" data-offset="0" class="scrollspy-example" id="showRst"  >
+                       
+           				</div>
+                        
+                          
+                           
+                        </div><!--/span-->                      
+                        
+						
+                
+        <script type="text/javascript">
+			
+			function fillData( list ){				
+				$('#showRst').html( list );
+			}
+			
+			function doSearch(){
+				var url = $( '#url' ).val();
+				if ( url == '' ){ newDialog( { title : '提示',  content : '请输入站内查询地址！', bodyClass : 'alter alert-error' } ); return; }
+				loadData( url , function( msg ){
+					fillData( msg );
+					
+				} )
+				console.log('AAAA:::', ajaxStatus );
+			}
+			$(document).keydown(function(event){
+				if(event.keyCode==13){
+					doSearch();
+				}
+			});			
+        </script>

@@ -1,0 +1,87 @@
+<div class="span11 panel">
+	<div class="panel-header">
+    	<i class="icon-list-alt icon-blue"></i>
+        <h2>上传数据查看</h2>
+    </div>
+    <div class="span9 columns" style="width:95%;">
+    	<ul id="tabHead" class="nav nav-tabs">
+        	<li class="active"><a href="#dataBody" data-toggle="tab">考勤记录信息</a></li>
+            <li><a name='user' href="#" data-toggle="tab">人员信息</a></li>
+            <li><a name="tmp" href="#" data-toggle="tab">指纹信息</a></li>
+            <li><a name="oplog" href="#" data-toggle="tab">操作日志信息</a></li>
+          </ul>
+          
+          <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="dataBody" style="width:90%;margin-left:20px;">
+            	<table class="table table-striped table-bordered table-condensed">
+                    <thead>
+                    	<tr>
+                            <th>上传编号</th>
+                            <th>序列号</th>
+                            <th>ip地址</th>                                                         
+                            <th>考勤号码</th>
+                            <th>考勤类型</th>
+                            <th>考勤时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id='body'>
+                    </tbody>                   
+                </table>
+                <div id="pageM" class="pagination pull-right"></div>
+            </div>                                  
+       </div>
+   </div>
+</div>
+  
+              
+<script type="text/javascript">
+
+	function fillData( list ){
+		var html = '';	
+		for( var o in list ){
+			var row = list[ o ];					
+			data[ o ] = row;
+			html += '<tr id="row' + o + '" ><td>' + ( row['id'] || '' ) + '</td><td>' + ( row['sn'] || '' ) + '</td>' +
+				'<td>' + ( row['ip'] || ''  ) + '</td><td>' + ( row['pin'] || '' ) + '</td>' +
+				'<td>' + ( row['checktype'] || '' ) + '</td><td>' + ( row['checktime'] || '' ) + '</td>' +
+				'<td class="operations"><a id="view" class="btn btn-small btn-info table-preview" href="javascript:void(0);" ><i class="icon-search"></i></a>&nbsp;&nbsp;</tr>';
+		}
+		$('#body').html( html );
+	}
+		
+	function doit(){
+		loadData( '/manage/uploaddata?page=' + ( currentP || 1 ) , function( msg ){
+			if( msg == '{}' ) return;
+			try{
+				var objs=eval(msg);
+			}catch(e){
+				eval("var objs=" + msg);
+			}			
+			fillData( objs.data );			
+			data.size = objs.size;
+			data.pages = objs.pages;
+			pageInit( objs.pages, objs.size );	
+			bindEvent();
+		} )
+	}
+	
+	function init(){
+		currentP = 1;
+		bind = 0;
+		data = {};
+		doit();	
+		if( lineStatus != null ) window.clearTimeout( lineStatus );					
+	}		
+	$(document).ready(function(){
+		init();				
+	});
+	function bindEvent(){
+		$(".operations").delegate('a.table-preview','click', function(){							
+			var index = $(this).parents('tr').attr('id'); 
+			index = index.substring(3, index.length); 
+			var text = convert( data[ index ], 1, '18px', null, '30px');  
+			newDialog( { title : "查看考勤详细信息",  content : text, bodyClass : 'alert alert-success', id : 'view' } );
+        });	
+	}
+</script>

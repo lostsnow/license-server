@@ -1,0 +1,170 @@
+set $device_request 'no';
+
+location /lua_content {
+	default_type 'text/plain';
+	content_by_lua "ngx.say('Hello,world!')";
+}
+ # GET /recur?num=5
+location /recur/ {
+    # MIME type determined by default_type:
+    default_type 'text/plain';
+    content_by_lua '
+    local num = tonumber(ngx.var.arg_num) or 0
+    if num > 50 then
+        ngx.say("num too big")
+        return
+    end
+    ngx.say("num is: ", num)
+    if num > 0 then
+        res = ngx.location.capture("/recur/?num=" .. tostring(num - 1))
+        ngx.print("status=", res.status, " ")
+        ngx.print("body=", res.body)
+    else
+        ngx.say("end")
+    end
+    ';
+}
+location /nRecur/ {
+	default_type 'text/plain';
+	content_by_lua_file "iclock/test_new.lua";
+}
+location /sleep {
+	default_type 'text/plain';
+	resolver 8.8.8.8;
+	content_by_lua_file "iclock/sleep.lua";
+}
+location /sleep2 {
+	default_type 'text/plain';
+	resolver 8.8.8.8;
+	content_by_lua_file "iclock/sleep2.lua";
+}
+
+location /execute_pull/ {
+	default_type 'text/plain';
+	content_by_lua_file "iclock/execute_pull.lua";
+}
+
+location /connect/ {
+	default_type 'text/plain';
+	content_by_lua_file "iclock/connect.lua";
+}
+
+location /test {
+    client_body_buffer_size 10m;
+    client_max_body_size 10m;
+	lua_need_request_body on;
+	default_type 'text/plain';
+	content_by_lua_file "iclock/test.luac";
+}
+
+location /import/{#测试 注意 client_max_body_size client_body_buffer_size 两个的值要一样，
+    default_type 'text/plain; charset=utf-8';
+    lua_need_request_body on;
+    client_max_body_size 3m;
+    client_body_buffer_size 3m;
+    client_body_in_single_buffer on;
+    content_by_lua_file iclock/import_data.lua;
+}
+
+# ----------- ADMS Process 处理进程 --------------------
+
+location ~ ^/iclock/process/([^\/]+) {
+	default_type 'text/plain';
+	set $dispatcher_module process_$1; #此变量用于标记请求使用哪个处理模块进行处理
+	content_by_lua_file "iclock/template.lua";
+}
+
+#  ----------- ADMS PUSH Server API --------------------
+
+location ~ ^/iclock/sdk/(.+)/(.*) {
+    client_body_buffer_size 400k;
+    client_max_body_size 400k;
+    default_type 'text/plain';
+    content_by_lua_file "iclock/cdata.lua";
+}
+location ~ ^/iclock/sdk/(.+) {
+    client_body_buffer_size 400k;
+    client_max_body_size 400k;
+    default_type 'text/plain';
+    content_by_lua_file "iclock/cdata.lua";
+}
+
+#  ----------- ADMS PUSH Server API --------------------
+#location ~ ^/pullsdk/(.+) {
+#    client_body_buffer_size 400k;
+#    client_max_body_size 400k;
+#    default_type 'text/plain';
+#    content_by_lua_file "iclock/pull.lua";
+#}
+
+
+#  ----------- ADMS Sync Server API --------------------
+
+location ~ ^/iclock/adms-entity/([^\/]+)/([^\/]+)/([^\/]*)\/*(.*) {  #基于对象的操作
+    default_type 'text/plain';
+	set $dispatcher_module entity_object;
+	content_by_lua_file "iclock/template.lua";
+}
+
+location ~ ^/iclock/adms-entity/([^\/]+)/([^\/]*) {  #基于整体对象列表的操作
+    default_type 'text/plain';
+	set $dispatcher_module entities;
+	content_by_lua_file "iclock/template.lua";
+}
+
+location ~ ^/iclock/adms-api/(.+)/(.+)/ {  #其他功能
+    default_type 'text/plain';
+	set $dispatcher_module adms-api;
+	content_by_lua_file "iclock/template.lua";
+}
+
+#  ----------- ADMS PUSH Server: Device Requests--------
+location ~ ^/iclock/(.+) {
+    client_body_buffer_size 1m;
+    client_max_body_size 1m;
+    default_type 'text/plain';
+    set $device_request 'yes';    #此变量用于标记请求来自于设备
+    set $posHandle_url ''; #此变量用于存储处理消费机的挂失、解挂、修改密码三个操作
+    content_by_lua_file "iclock/cdata.lua";
+}
+
+#  ----------- ADMS web page API --------------------
+location ~ ^/manage/(.+) {
+    client_body_buffer_size 400k;
+    client_max_body_size 400k;
+    default_type 'text/plain';
+    content_by_lua_file "iclock/manage.lua";
+}
+location ~ ^/login/ {
+    default_type 'text/html; charset=utf-8';
+    lua_need_request_body on;
+    content_by_lua_file "iclock/login.lua";
+
+}
+location ~ ^/exit/ {
+    default_type 'text/html; charset=utf-8';
+    lua_need_request_body on;
+    content_by_lua_file "iclock/exit.lua";
+
+}
+
+#  ----------- ADMS API Document --------------------
+location /api-doc/ {
+	root .;
+	index index.html index.htm;
+}
+
+#  ----------- PUSH upload files --------------------
+location /upload_file/ {
+	root .;
+	index index.html index.htm;
+}
+
+location /status {
+	root .;
+#stub_status on;
+}
+
+location ~ ^/compile/(.+) {
+	content_by_lua_file iclock/compile.lua;
+}

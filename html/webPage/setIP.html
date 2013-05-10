@@ -1,0 +1,199 @@
+                        <div id="dataBody" class="span11 panel">
+                            <div class="panel-header">
+                                <i class="icon-list-alt icon-blue"></i>
+                                <h2>配置外部IP地址</h2>
+                                <div class="actions-bar">
+                                    <div class="btn-group pull-right">
+                                        <a class="btn btn-success btn-mini">操作</a>
+                                        <a class="btn btn-success btn-mini dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="javascript:addIP();"><i class="icon-plus"></i> 添加外部IP地址</a></li>
+                                            <li><a href="javascript:delMIP();"><i class="icon-remove"></i> 删除多个外部IP地址</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-striped table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th width='2%' ></th>
+                                        <th>IP地址</a></th>
+                                        <th>备注</th>  
+                                        <th>操作</th>                                      
+                                    </tr>
+                                </thead>
+                                <tbody id='body'>
+                                 
+                                </tbody>
+                                <tr class="table-operations">
+                                        <td class="selections"><input class="selection select-all" type="checkbox" value="1"></td>
+                                        <td colspan="7" class="operations">
+                                            <a class="btn btn-small btn-success" id="checkall" ><i class="icon-ok"></i> 全选</a>
+                                            <a class="btn btn-small btn-warning" id="checkinverse"><i class="icon-remove"></i>反选</a>
+                                        </td>
+                              </tr>
+                            </table>
+                            
+                            <div id="pageM" class="pagination pull-right">                               
+                            </div>
+                            
+                            
+                            <div class="clear"></div>
+                        </div><!--/span-->
+                        
+                        <!--
+						<div class="modal hide" id="operations-modal">
+                            <div class="modal-header">
+                                <button class="close" data-dismiss="modal">×</button>
+                                <h3 class="operations-modal-header">Modal header</h3>
+                            </div>
+                            <div class="modal-body">
+                                <p class="operations-modal">One fine body…</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a  id="cls" href="javascript:void(0);" class="btn" data-dismiss="modal">关闭</a>
+                                <a id="doit" href="javascript:void(0);" class="btn btn-primary" >确定</a>
+                            </div>
+                        </div>
+                        -->
+                
+        <script type="text/javascript">
+			var new_ip = { IP : { placeholder : '外部应用系统所在机器的IP', helper : 'IP地址，且不能为空。', name : 'IP地址'},
+						   remark : { placeholder :'对此IP的描述信息', name : '备注' }};
+			function addIP(){				
+				var text = convert( new_ip, 1, '88px', null, '30px', null, 'form','help');
+					var b = newDialog( {
+						 button : [ { name : '关闭', sign : 'close', id: 'editB' } , { name : '确定', type : 1, fn : function(msg){ init(); } } ], 
+						 title : "新增外部IP地址",  
+						 content : text, 
+						 bodyClass : 'alert alert-warning', 
+						 id : 'add', 
+						 action : '/manage/sysIP', 
+						 method : 'post'
+					  } );				
+			}
+			
+			
+			function delMIP(){
+				var lst = [];
+				var ips = ''
+				$('.selection').each( function(){
+					if( $(this).attr( 'checked' ) == 'checked' ){
+						ips  += $(this).val() + ',';
+					}	
+				} );
+				
+				ips = ips.substring( 0, ips.length-1 );
+				if( ips == '' ){ newDialog( { title : '提示',  content : '请勾选要删除的IP地址！', bodyClass : 'alert alert-warning' } ); return ; }
+				newDialog( {
+						button : [ { name : '关闭', sign : 'close' } , { name : '确定', fname : "doDelIP(\'" + ips + "\')" }], 
+						title : "删除IP地址",  
+						content : '您确定要IP地址为"' + ips + '"的信息吗？', 
+						bodyClass : 'alert alert-warning'
+					 } );
+				
+			}
+			
+			function fillData( list ){
+				var html = '';	
+				for( var o in list ){
+					var row = list[ o ];					
+					data[ row[ 'IP' ] ] = row;
+					html += '<tr><td class="selections"><input class="selection" type="checkbox" value="' + ( row['IP'] || '' ) + '"></td><td>' + ( row['IP'] || '' ) + '</td>' +
+						'<td>' + ( row['remark'] || ''  ) + '</td>' +
+						'<td class="operations"><a id="edit" class="btn btn-small btn-warning table-edit" href="javascript:void(0);" ><i class="icon-edit"></i></a>&nbsp;&nbsp;' +
+                        '<a id="remove" href="javascript:void(0);" class="btn btn-small btn-danger"><i class="icon-remove"></i></a></td></tr>';
+				}
+				$('#body').html( html );
+			}
+			
+			function doit(){
+				loadData( '/manage/sysIP?page=' + ( currentP || 1 ) , function( msg ){
+					try{
+						var objs=eval(msg);
+					}catch(e){
+						eval("var objs=" + msg);
+					}
+					fillData( objs.ips );
+					data.size = objs.size;
+					data.pages = objs.pages;
+					pageInit( objs.pages, objs.size );										
+					bindEvent();
+				} )
+			}
+			function doDelIP( ip ){
+				loadData( '/manage/delIP?IP=' + ip, function( msg ){
+					try{
+						var objs=eval(msg);
+					}catch(e){
+						eval("var objs="+msg);
+					}
+					//$('#clsBtn').trigger('click');
+					if( objs.error_code == 0){
+						newDialog( { title : '提示',  content : 'IP地址为"' + ip + '"的设备已删除！', bodyClass : 'alert alert-success' } );
+						doit();	
+					}else{
+						newDialog( { title : '提示',  content : 'IP地址为"' + ip + '"的设备删除失败&nbsp;' + objs.message || '' + '！', bodyClass : 'alter alert-error'} );
+					}
+						
+				} )
+			}
+			function init(){
+				bind = 0;
+				data = {};
+				doit();	
+				if( lineStatus != null ){
+					window.clearTimeout( lineStatus );	
+					lineStatus = null;
+				}
+			}		
+			$(document).ready(function(){
+				init();				
+				
+			});
+			function bindEvent(){					
+				$(".operations").delegate('a.table-edit','click', function(){
+                	var ip = $(this).parents('tr').find('input[type="checkbox"]').attr('value');   
+					var info = copy_array( new_ip );
+					//data[ ip ]
+					for( var o in info ){
+						if( data[ ip ][ o ] ){
+							info[ o ][ 'value' ] = data[ ip ][ o ];	
+						}
+					}	
+					info.IP.show = true;
+					
+					var text = convert( info, 1, '88px', null, '30px', {'options':'' }, 'form');
+					var b = newDialog( {
+						 button : [ { name : '关闭', sign : 'close', id: 'editB' } , { name : '确定', type : 1, fn : function(msg){ init(); } } ], 
+						 title : "修改设备信息",  
+						 content : text, 
+						 bodyClass : 'alert alert-warning', 
+						 id : 'edit', 
+						 action : '/manage/sysIP?action=update', 
+						 method : 'post'
+					  } );
+          		});
+				
+            	$(".operations").delegate('a.btn-danger','click', function(){
+				  	var ip = $(this).parents('tr').find('input[type="checkbox"]').attr('value');   
+					newDialog( {
+						button : [ { name : '关闭', sign : 'close' } , { name : '确定', fname : "doDelIP(\'" + ip + "\')" }], 
+						title : "删除外部IP地址",  
+						content : '您确定要删除IP地址为"' + ip + '"的设备吗？', 
+						bodyClass : 'alert alert-error'
+					 } );
+            	});
+			}
+           
+            $("input.select-all").click(function(){
+                if($("input.select-all").attr('checked') == 'checked'){
+                    $("input.selection").attr('checked', true);
+                }
+                else{
+                    $("input.selection").attr('checked',false);
+                }
+            });
+        </script>
